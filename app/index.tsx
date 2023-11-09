@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { commonStyles } from '../styles/common';
+import { commonStyles } from '@styles/common';
 
 const Logo = () => {
   return (

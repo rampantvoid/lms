@@ -26,6 +26,12 @@ const courseModel = {
       content: 'Creating a simple mobile app using React Native components.',
     },
     // Additional weeks and topics...
+    {
+      week: 3,
+      topic: 'Building Your First App',
+      content: 'Creating a simple mobile app using React Native components.',
+    },
+    // Additional weeks and topics...
   ],
   students: [
     {

@@ -1,8 +1,8 @@
 import { SafeAreaView, ScrollView } from 'react-native';
-import CourseCard from '../../components/course-card';
-import { commonStyles } from '../../styles/common';
-import { listingStyles } from '../../styles/listing';
-import { courses } from '../../utils/courses';
+import CourseCard from '@components/course-card';
+import { commonStyles } from '@styles/common';
+import { listingStyles } from '@styles/listing';
+import { courses } from '@utils/courses';
 
 export default function Listing() {
   return (
@@ -10,10 +10,11 @@ export default function Listing() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={listingStyles.scrollView}
+        overScrollMode='never'
         contentContainerStyle={{
           rowGap: 20,
           padding: 20,
-          paddingBottom: 60,
+          paddingBottom: 20,
         }}
       >
         {courses.map((c, i) => (

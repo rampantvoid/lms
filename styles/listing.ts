@@ -36,10 +36,10 @@ export const listingStyles = StyleSheet.create({
   },
 
   cardDescription: {
-    marginTop: 10,
+    marginTop: 15,
     textAlign: 'justify',
     color: 'gray',
-    height: 70,
+    height: 75,
   },
 
   instructor: {
@@ -51,7 +51,7 @@ export const listingStyles = StyleSheet.create({
   },
 
   cardFooter: {
-    marginTop: 10,
+    marginTop: 15,
   },
 });
 
