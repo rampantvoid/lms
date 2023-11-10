@@ -28,4 +28,10 @@ export const commonStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  nothing: {
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 300,
+  },
 });

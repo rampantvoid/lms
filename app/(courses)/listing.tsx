@@ -1,10 +1,18 @@
-import { SafeAreaView, ScrollView } from 'react-native';
 import CourseCard from '@components/course-card';
+import Loader from '@components/loader';
+import useCourses from '@hooks/use-courses';
+import Text from '@shared/Text';
 import { commonStyles } from '@styles/common';
 import { listingStyles } from '@styles/listing';
-import { courses } from '@utils/courses';
+import { SafeAreaView, ScrollView } from 'react-native';
 
 export default function Listing() {
+  const { allCourses } = useCourses();
+
+  if (!allCourses) {
+    return <Loader />;
+  }
+
   return (
     <SafeAreaView style={commonStyles.container}>
       <ScrollView
@@ -17,9 +25,11 @@ export default function Listing() {
           paddingBottom: 20,
         }}
       >
-        {courses.map((c, i) => (
-          <CourseCard course={c} key={i} />
-        ))}
+        {allCourses.length > 0 ? (
+          allCourses.map((c, i) => <CourseCard course={c} key={i} />)
+        ) : (
+          <Text style={commonStyles.nothing}>No courses in our database.</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

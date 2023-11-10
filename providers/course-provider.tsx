@@ -2,14 +2,17 @@ import { createContext, useEffect, useState } from 'react';
 import { Course } from '../utils/courses';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useMemo } from 'react';
+import { fetchCourses } from '@utils/api';
 
 interface ICourseContext {
+  allCourses: Course[] | null;
   courses: Course[] | null;
   addCourse: (course: Course) => Promise<boolean>;
 }
 
 export const CourseContext = createContext<ICourseContext>({
   courses: null,
+  allCourses: null,
   addCourse: () => Promise.resolve(true),
 });
 
@@ -22,6 +25,10 @@ export default function CourseProvider({
 }) {
   const [courses, setCourses] = useState<Course[] | null>(null);
 
+  // Not handling error state seprately
+  // Value null: -> Loading...
+  const [allCourses, setAllCourses] = useState<Course[] | null>(null);
+
   useEffect(() => {
     AsyncStorage.getItem(COURSES_KEY).then(async (val) => {
       if (val === null) {
@@ -31,6 +38,10 @@ export default function CourseProvider({
 
       const parsed = JSON.parse(val) as Course[];
       setCourses(parsed);
+    });
+
+    fetchCourses().then((data) => {
+      setAllCourses(data);
     });
   }, []);
 
@@ -65,8 +76,9 @@ export default function CourseProvider({
         () => ({
           courses,
           addCourse,
+          allCourses,
         }),
-        [courses, addCourse]
+        [courses, addCourse, allCourses]
       )}
     >
       {children}

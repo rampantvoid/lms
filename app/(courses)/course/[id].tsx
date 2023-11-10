@@ -1,39 +1,49 @@
+import Loader from '@components/loader';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import {
-  Image,
-  SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import useCourses from '@hooks/use-courses';
 import Text from '@shared/Text';
 import { courseImageProps, courseStyles } from '@styles/course';
-import { screenOptions } from '@styles/listing';
-import { courses } from '@utils/courses';
-import useCourses from '@hooks/use-courses';
-import { useState, useMemo } from 'react';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { useMemo, useState } from 'react';
+import { Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+
+function Placeholder({ name }: { name?: string }) {
+  return (
+    <>
+      <Stack.Screen
+        options={
+          name
+            ? {
+                title: name,
+              }
+            : {
+                headerShown: false,
+              }
+        }
+      />
+      <Loader />
+    </>
+  );
+}
 
 export default function CoursePage() {
   const { id } = useLocalSearchParams();
+  const [isEnrolling, setIsEnrolling] = useState(false);
+  const { addCourse, courses: enrolledCourses, allCourses } = useCourses();
 
-  const course = courses.find((c) => c.id.toString() === id);
+  if (!enrolledCourses || !allCourses) {
+    return <Placeholder />;
+  }
+
+  const course = allCourses.find((c) => c.id.toString() === id);
   if (!course) return null;
 
   const thumb = courseImageProps(course.thumbnail);
-  const { addCourse, courses: enrolledCourses } = useCourses();
 
-  if (!enrolledCourses) {
-    return <ActivityIndicator size='large' color='white' />;
-  }
-
-  const hasEnrolled = useMemo(() => {
-    return enrolledCourses.some(
-      (enrolledCourse) => enrolledCourse.id === course.id
-    );
-  }, [enrolledCourses]);
-
-  const [isEnrolling, setIsEnrolling] = useState(false);
+  const hasEnrolled = enrolledCourses.some(
+    (enrolledCourse) => enrolledCourse.id === course.id
+  );
 
   const onPress = async () => {
     setIsEnrolling(true);
@@ -48,16 +58,28 @@ export default function CoursePage() {
         paddingBottom: 30,
       }}
     >
-      <Stack.Screen options={screenOptions(course.name)} />
-
+      <Stack.Screen
+        options={{
+          title: course.name,
+        }}
+      />
       <SafeAreaView>
         <Image source={thumb.source} style={thumb.style} />
 
         <SafeAreaView style={courseStyles.titleContainer}>
           <Text style={courseStyles.title}>{course.name}</Text>
 
-          <SafeAreaView style={courseStyles.badge}>
-            <Text style={courseStyles.badgeText}>Open</Text>
+          <SafeAreaView
+            style={[
+              courseStyles.badge,
+              course.enrollmentStatus !== 'Open' && {
+                backgroundColor: 'red',
+              },
+            ]}
+          >
+            <Text style={courseStyles.badgeText}>
+              {course.enrollmentStatus}
+            </Text>
           </SafeAreaView>
         </SafeAreaView>
 
@@ -163,12 +185,16 @@ export default function CoursePage() {
       <TouchableOpacity
         style={[
           courseStyles.enrollBtn,
-          (hasEnrolled || isEnrolling) && {
+          (hasEnrolled ||
+            isEnrolling ||
+            course.enrollmentStatus !== 'Open') && {
             opacity: 0.4,
           },
         ]}
         onPress={onPress}
-        disabled={hasEnrolled || isEnrolling}
+        disabled={
+          hasEnrolled || isEnrolling || course.enrollmentStatus !== 'Open'
+        }
       >
         <Text style={courseStyles.enrollText}>
           {hasEnrolled ? 'Enrolled' : 'Enroll'}

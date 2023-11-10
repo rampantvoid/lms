@@ -52,23 +52,7 @@ export default function CourseCard({ course }: { course: Course }) {
           </View>
 
           <Text style={listingStyles.cardDescription} numberOfLines={4}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus
-            dignissimos eaque a iste repudiandae eius minus! Accusantium dolorem
-            odio non eligendi quam sunt, suscipit nemo obcaecati voluptatem
-            velit molestiae voluptate! Facere sequi, earum a itaque similique
-            saepe eveniet, quasi sit quis delectus non. Ut voluptates neque enim
-            ipsam, quo perspiciatis repudiandae qui iusto vitae esse, totam et
-            reiciendis earum quos. Temporibus atque maiores itaque quidem esse
-            aut, quae debitis error pariatur velit totam consequuntur natus
-            magni corrupti numquam laborum quia libero ipsa? Amet error,
-            corrupti iste aliquid aperiam magnam ab. Accusamus quos culpa illo
-            nostrum vel tempore cumque incidunt earum dolores, quia
-            consequuntur, voluptatem vero? Illo, officiis pariatur quo
-            distinctio saepe incidunt rem quod quis. Ex ipsam natus ratione in?
-            Quam optio provident recusandae libero quis cum tempora. Accusamus
-            explicabo quisquam aliquam veritatis ipsa in quaerat libero autem
-            placeat quas deserunt commodi iure excepturi doloremque, blanditiis
-            iusto corrupti quam tempora?
+            {course.description}
           </Text>
 
           <View style={listingStyles.cardFooter}>
